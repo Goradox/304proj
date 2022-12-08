@@ -13,6 +13,9 @@
 	  color:red;
 	}
 </style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
 </head>
 <body style="background-color:black;">
 
@@ -137,6 +140,11 @@ try
 	out.println(ex);
 }
 %>
+
+<script>
+
+
+</script>
 
 </body>
 </html>
