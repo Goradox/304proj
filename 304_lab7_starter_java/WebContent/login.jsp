@@ -29,6 +29,7 @@ if (session.getAttribute("loginMessage") != null)
 </table>
 <br/>
 <input class="submit" type="submit" name="Submit2" value="Log In">
+<input class="submit" type="submit" name="Submit2" value="New user">
 </form>
 
 </div>
