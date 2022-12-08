@@ -92,25 +92,44 @@ NumberFormat currFormat = NumberFormat.getCurrencyInstance();
 
 try 
 {
-	out.println("<table><tr><th></th><th><font color=red>image</font></th><th>Product Name</th><th>Product Price</th></tr>");
+	getConnection();
+	Statement stmt = con.createStatement(); 			
+	stmt.execute("USE orders");
 	
-	String SQL =  "SELECT productId, productName, productPrice, productImageURL FROM product ";
-
-	boolean hasProd = productNameReq != null && !productNameReq.equals("");
-	if(hasProd){
-		//productNameReq = "%" + productNameReq + "%";
-		SQL = SQL+" WHERE productName LIKE ?";
+	PreparedStatement pstmt = con.prepareStatement(sql);
+	if (hasNameParam)
+	{
+		pstmt.setString(1, name);	
+		if (hasCategoryParam)
+		{
+			pstmt.setString(2, category);
+		}
+	}
+	else if (hasCategoryParam)
+	{
+		pstmt.setString(1, category);
 	}
 	
 	ResultSet rst = pstmt.executeQuery();
-	while (rst.next()){
-		int productId = rst.getInt(1);
-		String productName = rst.getString(2);
-		String productPrice = currFormat.format(rst.getDouble(3));
-		String IMGurl = rst.getString(4);
-		String Query = "<tr><td><a href='addcart.jsp?id="+productId+"&name="+productName+"&price="+productPrice+"'>Add To Cart</a></td><td><img src = \""+IMGurl+"\"></td><td><a href='product.jsp?id="+productId+"'>"+productName+"</a></td><td>"+productPrice+"</td></tr>";
-		out.println(Query);
-		
+	
+	out.print("<font face=\"Century Gothic\" size=\"2\"><table class=\"table\" border=\"1\"><tr><th class=\"col-md-1\"></th><th>Product Name</th>");
+	out.println("<th>Image</th><th>Category</th><th>Price</th></tr>");
+	while (rst.next()) 
+	{
+		int id = rst.getInt(1);
+		out.print("<td class=\"col-md-1\"><a href=\"addcart.jsp?id=" + id + "&name=" + rst.getString(2)
+				+ "&price=" + rst.getDouble(3) + "\">Add to Cart</a></td>");
+
+		String itemCategory = rst.getString(4);
+		String color = (String) colors.get(itemCategory);
+		if (color == null)
+			color = "#FF0000";
+
+		out.println("<td><a href=\"product.jsp?id="+id+"\"<font color=\"" + color + "\">" + rst.getString(2) + "</font></td>"
+				+ "<td><img src = \"" + rst.getString(4) + "\"></td>"
+				+ "<td><font color=\"" + color + "\">" + category + "</font></td>"
+				+ "<td><font color=\"" + color + "\">" + currFormat.format(rst.getDouble(3))
+				+ "</font></td></tr>");
 	}
 	out.println("</table></font>");
 	closeConnection();
