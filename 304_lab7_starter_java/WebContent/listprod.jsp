@@ -17,6 +17,29 @@
 <h1 style="color:red">Search for the products you want to buy:</h1>
 
 <form method="get" action="listprod.jsp" style="color:red">
+	<p align="left">
+		<select size="1" name="categoryName">
+		<option>All</option>
+	  
+	  <%
+	  /*
+	  // Could create category list dynamically - more adaptable, but a little more costly
+	  try               
+	  {
+		  getConnection();
+		   ResultSet rst = executeQuery("SELECT DISTINCT categoryName FROM Product");
+			  while (rst.next()) 
+			  out.println("<option>"+rst.getString(1)+"</option>");
+	  }
+	  catch (SQLException ex)
+	  {       out.println(ex);
+	  }
+	  */
+	  %>
+	  
+		<option>Human like</option>
+		<option>Unhuman</option>      
+		</select>
 <input type="text" name="productName" size="50">
 <input type="submit" value="Submit"><input type="reset" value="Reset"> (Leave blank for all products)
 </form>
@@ -46,9 +69,9 @@ NumberFormat currFormat = NumberFormat.getCurrencyInstance();
 try (Connection con = DriverManager.getConnection(url, uid, pw);
 	Statement stmt = con.createStatement();) 
 {
-	out.println("<table><tr><th></th><th><font color=red>image</font></th><th>Product Name</th><th>Product Price</th></tr>");
+	out.println("<table><tr><th></th><th><font color=red>image</font></th><th>Product Name</th><th>Category</th><th>Product Price</th></tr>");
 	
-	String SQL =  "SELECT productId, productName, productPrice, productImageURL FROM product ";
+	String SQL =  "SELECT productId, productName, productPrice, productImageURL, categoryName FROM product JOIN category on product.categoryID = category.categoryID";
 
 	boolean hasProd = productNameReq != null && !productNameReq.equals("");
 	if(hasProd){
@@ -63,7 +86,8 @@ try (Connection con = DriverManager.getConnection(url, uid, pw);
 		String productName = rst.getString(2);
 		String productPrice = currFormat.format(rst.getDouble(3));
 		String IMGurl = rst.getString(4);
-		String Query = "<tr><td><a href='addcart.jsp?id="+productId+"&name="+productName+"&price="+productPrice+"'>Add To Cart</a></td><td><img src = \""+IMGurl+"\"></td><td><a href='product.jsp?id="+productId+"'>"+productName+"</a></td><td>"+productPrice+"</td></tr>";
+		String CatName = rst.getString(5);
+		String Query = "<tr><td><a href='addcart.jsp?id="+productId+"&name="+productName+"&price="+productPrice+"'>Add To Cart</a></td><td><img src = \""+IMGurl+"\"></td><td><a href='product.jsp?id="+productId+"'>"+productName+"</a></td><td>"+CatName+"</td><td>"+productPrice+"</td></tr>";
 		out.println(Query);
 		
 	}

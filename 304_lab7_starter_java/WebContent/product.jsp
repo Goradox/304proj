@@ -8,7 +8,7 @@
 <title>Gower's Grocery - Product Information</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body style="background-color:black;">
 
 <%@ include file="header.jsp" %>
 
@@ -50,8 +50,6 @@
             if (imgurl != null)
                 out.println("<img src = \""+imgurl+"\">");
             String img = rst.getString(5);
-            if(img != null)
-                out.println("<img src = \"displayimage.jsp?id="+productId+"\">");
             out.println("<table>");
             out.println("<tr><td>"+"id"+"</td><td>"+productid+"</td></tr>");
             out.println("<tr><td>"+"price"+"</td><td>"+productPrice+"</td></tr>");
