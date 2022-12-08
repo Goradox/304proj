@@ -1,6 +1,8 @@
 <%@ page import="java.sql.*,java.net.URLEncoder" %>
 <%@ page import="java.text.NumberFormat" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
+<%@ page import="java.util.HashMap" %>
+<%@ include file="jdbc.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,70 +19,123 @@
 <h1 style="color:red">Search for the products you want to buy:</h1>
 
 <form method="get" action="listprod.jsp" style="color:red">
+	<p align="left">
+		<select size="1" name="categoryName">
+		<option>All</option>
+	  
+	  <%
+	  /*
+	  // Could create category list dynamically - more adaptable, but a little more costly
+	  try               
+	  {
+		  getConnection();
+		   ResultSet rst = executeQuery("SELECT DISTINCT categoryName FROM Product");
+			  while (rst.next()) 
+			  out.println("<option>"+rst.getString(1)+"</option>");
+	  }
+	  catch (SQLException ex)
+	  {       out.println(ex);
+	  }
+	  */
+	  %>
+	  
+		<option>Human like</option>
+		<option>Unhuman</option>      
+		</select>
 <input type="text" name="productName" size="50">
 <input type="submit" value="Submit"><input type="reset" value="Reset"> (Leave blank for all products)
 </form>
 
-<% // Get product name to search for
+<%
+// Colors for different item categories
+HashMap<String,String> colors = new HashMap<String,String>();		// This may be done dynamically as well, a little tricky...
+colors.put("Human like", "#FF0000");
+colors.put("Unhuman", "#FF0000");
+
+%>
+
+<%
+// Get product name to search for
 String name = request.getParameter("productName");
-		
-//Note: Forces loading of SQL Server driver
-try
-{	// Load driver class
-	Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-}
-catch (java.lang.ClassNotFoundException e)
+String category = request.getParameter("categoryName"); 
+
+boolean hasNameParam = name != null && !name.equals("");
+boolean hasCategoryParam = category != null && !category.equals("") && !category.equals("All");
+String filter = "", sql = "";
+
+if (hasNameParam && hasCategoryParam)
 {
-	out.println("ClassNotFoundException: " +e);
+	filter = "<h3>Products containing '"+name+"' in category: '"+category+"'</h3>";
+	name = '%'+name+'%';
+	sql = "SELECT productId, productName, productPrice, productImageURL, categoryName FROM Product P JOIN Category C ON P.categoryId = C.categoryId WHERE productName LIKE ? AND categoryName = ?";
+}
+else if (hasNameParam)
+{
+	filter = "<h3>Products containing '"+name+"'</h3>";
+	name = '%'+name+'%';
+	sql = "SELECT productId, productName, productPrice, productImageURL, categoryName FROM Product P JOIN Category C ON P.categoryId = C.categoryId WHERE productName LIKE ?";
+}
+else if (hasCategoryParam)
+{
+	filter = "<h3>Products in category: '"+category+"'</h3>";
+	sql = "SELECT productId, productName, productPrice, productImageURL, categoryName FROM Product P JOIN Category C ON P.categoryId = C.categoryId WHERE categoryName = ?";
+}
+else
+{
+	filter = "<h3>All Products</h3>";
+	sql = "SELECT productId, productName, productPrice, productImageURL, categoryName FROM Product P JOIN Category C ON P.categoryId = C.categoryId";
 }
 
-// Variable name now contains the search string the user entered
-// Use it to build a query and print out the resultset.  Make sure to use PreparedStatement!
+out.println(filter);
 
-// Make the connection
-String url = "jdbc:sqlserver://cosc304_sqlserver:1433;DatabaseName=orders;TrustServerCertificate=True";
-String uid = "sa";
-String pw = "304#sa#pw";
-String productNameReq = '%'+request.getParameter("productName")+'%';
 NumberFormat currFormat = NumberFormat.getCurrencyInstance();
-try (Connection con = DriverManager.getConnection(url, uid, pw);
-	Statement stmt = con.createStatement();) 
-{
-	out.println("<table><tr><th></th><th><font color=red>image</font></th><th>Product Name</th><th>Product Price</th></tr>");
-	
-	String SQL =  "SELECT productId, productName, productPrice, productImageURL FROM product ";
 
-	boolean hasProd = productNameReq != null && !productNameReq.equals("");
-	if(hasProd){
-		//productNameReq = "%" + productNameReq + "%";
-		SQL = SQL+" WHERE productName LIKE ?";
+try 
+{
+	getConnection();
+	Statement stmt = con.createStatement(); 			
+	stmt.execute("USE orders");
+	
+	PreparedStatement pstmt = con.prepareStatement(sql);
+	if (hasNameParam)
+	{
+		pstmt.setString(1, name);	
+		if (hasCategoryParam)
+		{
+			pstmt.setString(2, category);
+		}
 	}
-	PreparedStatement pstmt = con.prepareStatement(SQL);
-	pstmt.setString(1,productNameReq);
+	else if (hasCategoryParam)
+	{
+		pstmt.setString(1, category);
+	}
+	
 	ResultSet rst = pstmt.executeQuery();
-	while (rst.next()){
-		int productId = rst.getInt(1);
-		String productName = rst.getString(2);
-		String productPrice = currFormat.format(rst.getDouble(3));
-		String IMGurl = rst.getString(4);
-		String Query = "<tr><td><a href='addcart.jsp?id="+productId+"&name="+productName+"&price="+productPrice+"'>Add To Cart</a></td><td><img src = \""+IMGurl+"\"></td><td><a href='product.jsp?id="+productId+"'>"+productName+"</a></td><td>"+productPrice+"</td></tr>";
-		out.println(Query);
-		
+	
+	out.print("<font face=\"Century Gothic\" size=\"2\"><table class=\"table\" border=\"1\"><tr><th class=\"col-md-1\"></th><th>Product Name</th>");
+	out.println("<th>Image</th><th>Category</th><th>Price</th></tr>");
+	while (rst.next()) 
+	{
+		int id = rst.getInt(1);
+		out.print("<td class=\"col-md-1\"><a href=\"addcart.jsp?id=" + id + "&name=" + rst.getString(2)
+				+ "&price=" + rst.getDouble(3) + "\">Add to Cart</a></td>");
+
+		String itemCategory = rst.getString(4);
+		String color = (String) colors.get(itemCategory);
+		if (color == null)
+			color = "#FF0000";
+
+		out.println("<td><a href=\"product.jsp?id="+id+"\"<font color=\"" + color + "\">" + rst.getString(2) + "</font></td>"
+				+ "<td><img src = \"" + rst.getString(4) + "\"></td>"
+				+ "<td><font color=\"" + color + "\">" + category + "</font></td>"
+				+ "<td><font color=\"" + color + "\">" + currFormat.format(rst.getDouble(3))
+				+ "</font></td></tr>");
 	}
-	out.println("</table>");
-	con.close();
-}catch(SQLException ex){
+	out.println("</table></font>");
+	closeConnection();
+} catch (SQLException ex) {
 	out.println(ex);
 }
-// Print out the ResultSet
-
-// For each product create a link of the form
-// addcart.jsp?id=productId&name=productName&price=productPrice
-// Close connection
-
-// Useful code for formatting currency values:
-// NumberFormat currFormat = NumberFormat.getCurrencyInstance();
-// out.println(currFormat.format(5.0);	// Prints $5.00
 %>
 
 </body>
