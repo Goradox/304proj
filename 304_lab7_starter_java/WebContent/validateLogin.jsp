@@ -11,10 +11,8 @@
 	catch(IOException e)
 	{	System.err.println(e); }
 
-	if(authenticatedUser != null)
-		response.sendRedirect("shop.html");		// Successful login
-	else
-		response.sendRedirect("login.jsp");		// Failed login - redirect back to login page with a message 
+	if(authenticatedUser != null) response.sendRedirect("shop.jsp");		// Successful login
+	else response.sendRedirect("login.jsp");		// Failed login - redirect back to login page with a message 
 %>
 
 
