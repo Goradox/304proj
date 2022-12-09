@@ -1,2 +1,2 @@
-<H1 align="center"><font face="cursive" color="#3399FF"><a href="shop.html">Gower's pet store</a></font></H1>      
+<H1 align="center"><font face="cursive" color="#3399FF"><a href="shop.jsp">Inhuman trafficking</a></font></H1>      
 <hr>

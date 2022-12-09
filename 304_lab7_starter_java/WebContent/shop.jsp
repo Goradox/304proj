@@ -41,36 +41,40 @@
                 }
         </style>
 </head>
-<body>
-<div class="topnav">
-        <a class="active" href="shop.jsp">Home</a>
-        <a href="listprod.jsp">Products</a>
-        <a href="customer.jsp">customer info</a>
-        <a href="checkout.jsp">Check Out</a>
-        <a href="about.html">About</a>
-        <a href="showcart.jsp">Cart</a>
-        
-</div>
-<h1 align="center">Welcome to Mythical Creatures Store</h1>
+        <body>
+                <div class="topnav">
+                        <a class="active" href="shop.jsp">Home</a>
+                        <a href="listprod.jsp">Products</a>
+                        <%
+                        String userName = (String) session.getAttribute("authenticatedUser");
+                        if (userName != null)
+                                out.println("<a href = 'customer.jsp'>"+userName+"</a>");
+                         %>
+                        <a href="checkout.jsp">Check Out</a>
+                        <a href="about.html">About</a>
+                        <a href="showcart.jsp">Cart</a>
+                        
+                </div>
+                <h1 align="center">Welcome to Inhuman trafficking</h1>
 
-<h2 align="center"><a href="login.jsp">Login</a></h2>
+                <h2 align="center"><a href="login.jsp">Login</a></h2>
 
-<h2 align="center"><a href="listprod.jsp">Begin Shopping</a></h2>
+                <h2 align="center"><a href="listprod.jsp">Begin Shopping</a></h2>
 
-<h2 align="center"><a href="listorder.jsp">List All Orders</a></h2>
+                <h2 align="center"><a href="listorder.jsp">List All Orders</a></h2>
 
-<h2 align="center"><a href="customer.jsp">Customer Info</a></h2>
+                <h2 align="center"><a href="customer.jsp">Customer Info</a></h2>
 
-<h2 align="center"><a href="admin.jsp">Administrators</a></h2>
+                <h2 align="center"><a href="admin.jsp">Administrators</a></h2>
 
-<h2 align="center"><a href="logout.jsp">Log out</a></h2>
+                <h2 align="center"><a href="logout.jsp">Log out</a></h2>
 
-<%
-	String userName = (String) session.getAttribute("authenticatedUser");
-	if (userName != null)
-		out.println("<h3 align=\"center\">Signed in as: "+userName+"</h3>");
-%>
-</body>
+                <%
+                        //String userName = (String) session.getAttribute("authenticatedUser");
+                        if (userName != null)
+                                out.println("<h3 align=\"center\">Signed in as: "+userName+"</h3>");
+                %>
+        </body>
 </head>
 
 

@@ -46,12 +46,16 @@
 
 	<div class="topnav">
 		<a class="active" href="shop.jsp">Home</a>
-        <a href="listprod.jsp">Products</a>
-        <a href="customer.jsp">customer info</a>
-        <a href="checkout.jsp">Check Out</a>
-        <a href="about.html">About</a>
-        <a href="showcart.jsp">Cart</a>
-        
+		<a href="listprod.jsp">Products</a>
+		<%
+		String userName = (String) session.getAttribute("authenticatedUser");
+		if (userName != null)
+				out.println("<a href = 'customer.jsp'>"+userName+"</a>");
+		 %>
+		<a href="checkout.jsp">Check Out</a>
+		<a href="about.html">About</a>
+		<a href="showcart.jsp">Cart</a>
+		
 	</div>	
 <h1 style="color:red">Search for the products you want to buy:</h1>
 
