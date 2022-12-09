@@ -13,7 +13,7 @@
 	{	System.err.println(e); }
 
 	if(authenticatedUser != null)
-		response.sendRedirect("shop.html");		// Successful login
+		response.sendRedirect("shop.jsp");		// Successful login
 	else
 		response.sendRedirect("register.jsp");
 				// Failed register - redirect back to register page with a message 
