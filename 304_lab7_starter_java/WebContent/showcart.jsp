@@ -67,7 +67,7 @@ else
 		
 		out.print("<tr><td>"+product.get(0)+"</td>");
 
-		//out.print("<tr>" + entry.getKey() + "</tr>");
+		out.print("<td>" + product.get(1) + "</td>");
 
 		out.print("<td align=\"center\">"+product.get(3)+"</td>");
 		Object price = product.get(2);

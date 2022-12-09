@@ -5,15 +5,52 @@
 <html>
 <head>
 <title>Gower's Grocery</title>
-<style>
-	table, th, td {
-	  border: 1px solid red;
-	  color:red;
-	}
-</style>
+	<style>
+		table, th, td {
+		border: 1px solid red;
+		color:red;
+		}
+
+		/* Add a black background color to the top navigation */
+		.topnav {
+		background-color: rgb(179, 142, 65);
+		overflow: hidden;
+		}
+
+		/* Style the links inside the navigation bar */
+		.topnav a {
+		float: left;
+		color: #f2f2f2;
+		text-align: center;
+		padding: 14px 16px;
+		text-decoration: none;
+		font-size: 17px;
+		}
+
+		/* Change the color of links on hover */
+		.topnav a:hover {
+		background-color: #ddd;
+		color: black;
+		}
+
+		/* Add a color to the active/current link */
+		.topnav a.active {
+		background-color: #5a630a;
+		color: white;
+		}
+	</style>
 </head>
 <body style="background-color:black;">
 
+	<div class="topnav">
+		<a class="active" href="shop.jsp">Home</a>
+        <a href="listprod.jsp">Products</a>
+        <a href="customer.jsp">customer info</a>
+        <a href="checkout.jsp">Check Out</a>
+        <a href="about.html">About</a>
+        <a href="showcart.jsp">Cart</a>
+        
+	</div>	
 <h1 style="color:red">Search for the products you want to buy:</h1>
 
 <form method="get" action="listprod.jsp" style="color:red">
