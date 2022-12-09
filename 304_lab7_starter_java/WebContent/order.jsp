@@ -1,3 +1,10 @@
+<%@ page import="java.sql.*,java.util.Locale" %>
+<%@ page import="java.text.NumberFormat" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.util.Map,java.math.BigDecimal" %>
 <%@ include file="jdbc.jsp" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <!DOCTYPE html>
@@ -126,4 +133,3 @@ else
 %>
 </body>
 </html>
-

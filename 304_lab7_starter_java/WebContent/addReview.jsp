@@ -4,7 +4,7 @@
 
 <html>
     <head>
-        <title>Rays Grocery - Product Information</title>
+        <title>Inhuman Trafficking - Product Information</title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body style="padding-top: 45px">

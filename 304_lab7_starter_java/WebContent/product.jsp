@@ -23,7 +23,13 @@
 // Get product name to search for
 // TODO: Retrieve and display info for the product
     String productId = request.getParameter("id");
-
+    String alreadyReviewed = request.getParameter("rv");
+    if (alreadyReviewed != null) {
+        if (alreadyReviewed.equals("t"))
+            out.println("<div class='alert alert-success' role=alert>Review placed successfully!</div>");
+        else
+            out.println("<div class='alert alert-warning' role=alert>You have already placed a review for this product!</div>");
+    }
     if(productId == null)
         return;
     int number=-1;
@@ -69,6 +75,26 @@
             String cont = "<a href='listprod.jsp'>Continue Shopping</a>";
             out.println("<tr><td>"+cont+"</td></tr>");
             out.println("</table>");
+            // start review section
+        out.println("<div id='reviews' class='tabDetails mt-3'>" +
+                    "<a class='btn btn-outline-primary float-right' href='addReview.jsp?id="+productId+"'>Add a Review</a>" +
+                    "<h2 class='mt-3'>Reviews:</h2>");
+        // get the reviews
+        sql = "SELECT userid, reviewRating, reviewDate, reviewComment FROM review r JOIN customer c on r.customerId = c.customerId WHERE productId = ? ";
+        pstmt = con.prepareStatement(sql);
+        pstmt.setInt(1, Integer.parseInt(productId));
+        rst = pstmt.executeQuery();
+        while (rst.next()) {
+            // display the reviews
+            out.println(
+                "<div class='bg-light rounded mt-4 p-3'>" +
+                    "<h5>"+rst.getInt(2)+" Stars</h4>" +
+                    "<h6>"+rst.getString(1)+" on "+rst.getDate(3)+" says:</h2>" +
+                    "<h5 class='bg-white rounded mt-4 p-2'>"+rst.getString(4)+"</h5>" +
+                "</div>"
+            );
+        }
+
         }
         con.close();
     }
