@@ -5,8 +5,15 @@
 
 <html>
 <head>
-<title>Gower's Grocery - Product Information</title>
+<title>Gower's Pet - Product Information</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
+<style>
+	table, th, td {
+	  border: 1px solid red;
+	  color:red;
+	}
+    table.fixed {table-layout:fixed; width:600px;}/*Setting the table width is important!*/
+</style>
 </head>
 <body style="background-color:black;">
 
@@ -37,7 +44,7 @@
 		Statement stmt = con.createStatement(); )
 	{
 
-        String sql = "SELECT productId, productPrice, productName, productImageURL, productImage FROM product WHERE productId = ?";
+        String sql = "SELECT productId, productPrice, productName, productImageURL, productImage, productDesc FROM product WHERE productId = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
         pstmt.setInt(1,number);
         ResultSet rst = pstmt.executeQuery(); 
@@ -45,15 +52,18 @@
             int productid = rst.getInt(1);
             String productPrice = currFormat.format(rst.getDouble(2));
             String productName = rst.getString(3);
-            out.println("<h1>"+productName+"</h1>");
+            out.println("<h1 style ='color:red;'>"+productName+"</h1>");
             String imgurl = rst.getString(4);
+            String desc = rst.getString(6);
             if (imgurl != null)
                 out.println("<img src = \""+imgurl+"\">");
             String img = rst.getString(5);
-            out.println("<table>");
+            out.println("<table class = 'fixed'>");
             out.println("<tr><td>"+"id"+"</td><td>"+productid+"</td></tr>");
             out.println("<tr><td>"+"price"+"</td><td>"+productPrice+"</td></tr>");
-            
+            out.println("<tr><td>"+"Product Description"+"</td><td>"+desc+"</td></tr>");
+            out.println("</table>");
+            out.println("<table>");
             String addcart = "<a href='addcart.jsp?id="+productId+"&name="+productName+"&price="+productPrice+"'>Add To Cart</a>";
             out.println("<tr><td>"+addcart+"</td></tr>");
             String cont = "<a href='listprod.jsp'>Continue Shopping</a>";
