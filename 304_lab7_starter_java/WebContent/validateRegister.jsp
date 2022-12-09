@@ -36,7 +36,7 @@
 		}
 		if((username.length() == 0) || (password.length() == 0) || (firstName.length() == 0) || (lastName.length() == 0))
 		{
-			session.setAttribute("error", "missing data");
+			//session.setAttribute("error", "missing data");
 				return null;
 		}
 

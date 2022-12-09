@@ -87,7 +87,7 @@
 				}
 				else{
 					retStr = null;
-					session.setAttribute("error", "wrong password or no username");
+					//session.setAttribute("error", "wrong password or no username");
 				}
 			con.close();		
 		} 
