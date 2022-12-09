@@ -43,10 +43,12 @@
 </head>
 <body>
 <div class="topnav">
-        <a class="active" href="listprod.jsp">Products</a>
+        <a class="active" href="shop.jsp">Home</a>
+        <a href="listprod.jsp">Products</a>
         <a href="customer.jsp">customer info</a>
         <a href="checkout.jsp">Check Out</a>
         <a href="about.html">About</a>
+        <a href="showcart.jsp">Cart</a>
         
 </div>
 <h1 align="center">Welcome to Mythical Creatures Store</h1>
