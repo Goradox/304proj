@@ -37,7 +37,7 @@
 
         if(!isAdmin)
         {
-            out.println("<h1 style='font-size: 10vw;'>UNAUTHORIZED</h1>");
+            response.sendRedirect("unauth.jsp");
         }
 
         else
@@ -66,6 +66,7 @@
             }
             out.println("</table>");
             con.close();
+
         }
 
     }
@@ -74,7 +75,6 @@
         out.println(ex);
     }
     
-
 
 
 %>
