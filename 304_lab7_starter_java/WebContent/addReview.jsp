@@ -16,7 +16,7 @@
                 String productId = request.getParameter("id");
                 try {
                     getConnection();
-                    String sql = "SELECT productImageUrl, productReleaseYear, productBrand, productModel FROM product WHERE productId = ?";
+                    String sql = "SELECT productImageURL, productName FROM product WHERE productId = ?";
                     PreparedStatement stmt = con.prepareStatement(sql);
                     stmt.setInt(1, Integer.parseInt(productId));
                     ResultSet rst = stmt.executeQuery();
