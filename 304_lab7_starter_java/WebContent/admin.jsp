@@ -2,6 +2,8 @@
 <html>
 <head>
 <title>Administrator Page</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -76,6 +78,41 @@
 
 
 %>
+
+    <form id="newProduct">
+        <h2>New product</h2>
+
+        Product name: <input type="text" name="name">
+        Image url: <input type="text" name="imgUrl">
+        Category (1 - humanlike, 2 - unhuman): <input type="number" name="category" min="1" max="2">
+        Price: <input type="number" name="price" min="0" step="0.01">
+        <textarea rows="5">Description</textarea>
+
+        <input type="submit" value="Create product?">
+
+    </form>
+
+    <script>
+
+        //AJAX stuff
+        $('#newProduct').submit(function(e)
+        {
+            e.preventDefault();
+            $.post("addProduct.jsp", {'name': $('input[name="name"').val(), 'imgUrl': $('input[name="imgUrl"').val(), 'category': $('input[name="category"').val(), 'desc': $('textarea').val(), 'price': $('input[name="price"').val()}, function(data)
+            {
+                if(data.length <= 231)
+                {
+                    alert('PRODUCT ADDED');
+                }
+                else
+                {
+                    alert('PRODUCT NOT ADDED, BAD INPUT');
+                }
+            });
+        });
+
+        
+    </script>
 
 </body>
 </html>
