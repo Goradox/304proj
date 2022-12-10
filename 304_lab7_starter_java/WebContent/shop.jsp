@@ -39,6 +39,11 @@
                 background-color: #5a630a;
                 color: white;
                 }
+                img {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                }
         </style>
 </head>
         <body>
@@ -56,7 +61,7 @@
                         
                 </div>
 
-                <h1 align="center">Welcome to Inhuman trafficking</h1>
+                <img src="img\Unhuman_Trafficking.png" style="width:50%">
 
                 <%
                 if (userName == null)
@@ -74,7 +79,11 @@
 
                 <h2 align="center"><a href="admin.jsp">Administrators</a></h2>
 
-                <h2 align="center"><a href="logout.jsp">Log out</a></h2>
+                <%
+                if (userName != null)
+                        out.println("<h2 align='center'><a href='logout.jsp'>Log out</a></h2>");
+                 %>
+                
 
                 <%
                         //String userName = (String) session.getAttribute("authenticatedUser");
