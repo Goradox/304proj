@@ -92,6 +92,8 @@
 
     </form>
 
+    <button style="font-size: 4vw; margin-top: 100px;"><a style="text-decoration: none; color: #eb4334" href="loaddata.jsp">NUCLEAR OPTION (reset DB)</a></button>
+
     <script>
 
         //AJAX stuff
@@ -110,6 +112,8 @@
                 }
             });
         });
+
+
 
         
     </script>
